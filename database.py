@@ -17,7 +17,7 @@ class Task(db.Model):
         """Return a JSON representation of task"""
         return {
             'id': self.id,
-            'body': self.text,
+            'body': self.body,
             'column': self.column,
             'modified': self.modified.replace(tzinfo=timezone.utc).isoformat(),
             'sort_order': self.sort_order,

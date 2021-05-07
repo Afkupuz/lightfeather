@@ -10,10 +10,7 @@ def create_task(text):
 
 def get_tasks():
     """Return sorted list of tasks"""
-    tasks = []
-    for task in Task.query.order_by(Task.sort_order.asc()).all():
-        tasks.append(task.get_json)
-    return tasks
+    return [task.get_json() for task in Task.query.order_by(Task.sort_order.asc()).all()]
 
 def update_task(task_id, text):
     """Update a task"""

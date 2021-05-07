@@ -8,6 +8,8 @@ def setup(db):
     kanban = Flask(__name__)
     kanban.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kanban.db'
     db.init_app(kanban)
+    kanban.app_context().push()
+    db.create_all()
     #Todo: load from file
     return kanban
 
@@ -18,16 +20,19 @@ def index():
     """Gets the main index page"""
     return send_from_directory('static', 'index.html')
 
-@app.route('/api/kanban')
+@app.route('/api/kanban', methods=["GET"])
 def get_tasks():
     """GET kanban state"""
-    return tasks.get_tasks()
+    print("getting...")
+    return jsonify(tasks.get_tasks())
 
 @app.route('/api/kanban', methods=["PUT"])
-def create_task(text):
+def create_task():
     """PUT for kanban new task"""
-    tasks.create_task(text)
-    return True
+    print("creating...")
+    print(request.form.get('text'))
+    tasks.create_task(request.form.get('text'))
+    return "Success"
 
 @app.route('/api/kanban', methods=['POST'])
 def order_tasks():
@@ -36,27 +41,19 @@ def order_tasks():
     return True
 
 @app.route('/task', methods=['PUT'])
-def update_task(task_id, text):
+def update_task():
     """Update a task"""
-    tasks.update_task(task_id, text)
-    return True
+    print("updating....")
+    print(request.form.get('task_id'))
+    print(request.form)
+    tasks.update_task(request.form.get('task_id'), request.form.get('text'))
+    return "Success"
 
 @app.route('/task', methods=['DELETE'])
 def delete_task(task_id):
     """Delete a task"""
     task.delete_task(task_id)
     return 'Success'
-
-@app.route('/background_process')
-def background_process():
-	try:
-		lang = request.args.get('proglang', 0, type=str)
-		if lang.lower() == 'python':
-			return jsonify(result='You are wise')
-		else:
-			return jsonify(result='Try again.')
-	except Exception as e:
-		return str(e)
 
 if __name__ == '__main__':
     app.run(debug=True, port="23456")
