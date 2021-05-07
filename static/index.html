@@ -10,43 +10,24 @@
 </head>
 <body>
     <div>
-        <div class="container" style="background-color:pink;">
-            <h2>TODO</h2>
-            <ul class="sortable connectedSortable">
-                <li class="task">Activity A1</li>
-                <li class="task">Activity A2</li>
-                <li class="task">Activity A3</li>
+        <div class="container" style="background-color:red;">
+            <h2>Backlog</h2>
+            <ul class="sortable connectedSortable" id="backlog">
             </ul>
         </div>
         <div class="container" style="background-color:orange;">
             <h2>In Progress</h2>
             <ul class="sortable connectedSortable" >
-                <li class="task">Activity B1</li>
-                <li class="task">Activity B2</li>
-            </ul>
-        </div>
-        <div class="container" style="background-color:yellow;">
-            <h2>Verification</h2>
-            <ul class="sortable connectedSortable" >
-                <li class="task">Activity C1</li>
-                <li class="task">Activity C2</li>
             </ul>
         </div>
         <div class="container" style="background-color:green;">
-            <h2>Done</h2>
+            <h2>Complete</h2>
             <ul class="sortable connectedSortable" >
             </ul>
         </div>
         <div class='container'>
-            <form>
-                <input type="text" id="new_text" value=""/>
-                <button class="add-button">Add New</button>
-            </form>
-            <button class="get-button">Get All</button>
-            <form>
-                <input type="text" id="update_text" value=""/>
-                <button class="update-button">Update</button>
-            </form>
+            <input type="text" id="new_text" value=""/><button class="add-button">Add New</button>
+            <input type="text" id="get_val" value=""/><button class="get-button">Get All</button>
             <p id=result></p>
         </div>
     </div>

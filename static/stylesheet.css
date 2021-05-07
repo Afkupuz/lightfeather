@@ -8,4 +8,4 @@ body {font-family:Montserrat;background-color: #0066FF;}
   .sortable li span { position: absolute; margin-left: -1.3em; }
   
   .task:hover {transition: all .2s ease-in-out;transform: scale(1.1);}
-  .task{background-color:red;border-radius:3px;}
+  .task{background-color:purple;border-radius:3px;}

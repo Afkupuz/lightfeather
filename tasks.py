@@ -5,8 +5,10 @@ from database import db, Task
 
 def create_task(text):
     """Create a new task"""
-    db.session.add(Task(body=text))
+    new_task = Task(body=text)
+    db.session.add(new_task)
     db.session.commit()
+    return new_task.id
 
 def get_tasks():
     """Return sorted list of tasks"""
