@@ -1,25 +1,11 @@
-
 """cipher controller"""
 
-from flask import json
+from config import get_loads, get_shift
 
 LOWER_STRING = "abcdefghijklmnopqrstuvwxyz"
 UPPER_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUMBER_STRING = "1234567890"
 OTHER_STRING = "!@#$%^&*()"
-
-def get_conf():
-    """Load json config Shift and Loads"""
-    data = json.load(open('config.json'))
-    return data
-
-def get_shift():
-    data = get_conf()
-    return data["Shift"]
-
-def get_loads():
-    data = get_conf()
-    return data["Loads"]
 
 def encode(text):
     """Shifts forward each character in text by Shift amount"""
@@ -73,7 +59,3 @@ def read_from_file():
         data.append(decode(line))
     storage_file.close()
     return data
-
-
-write_to_file("Hello world")
-print(read_from_file())

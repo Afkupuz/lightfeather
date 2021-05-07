@@ -1,5 +1,5 @@
 from database import db
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify, request
 
 import tasks
 
@@ -8,6 +8,7 @@ def setup(db):
     kanban = Flask(__name__)
     kanban.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kanban.db'
     db.init_app(kanban)
+    #Todo: load from file
     return kanban
 
 app = setup(db)
@@ -45,6 +46,17 @@ def delete_task(task_id):
     """Delete a task"""
     task.delete_task(task_id)
     return 'Success'
+
+@app.route('/background_process')
+def background_process():
+	try:
+		lang = request.args.get('proglang', 0, type=str)
+		if lang.lower() == 'python':
+			return jsonify(result='You are wise')
+		else:
+			return jsonify(result='Try again.')
+	except Exception as e:
+		return str(e)
 
 if __name__ == '__main__':
     app.run(debug=True, port="23456")

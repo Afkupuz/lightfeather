@@ -1,12 +1,45 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Kanban board</title>
-  <meta charset="utf-8" />
-  <style></style>
+    <title>Kanban Board</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="./static/stylesheet.css">
+    <script type="text/javascript" src="./static/script.js"></script>        
 </head>
-<div>Hello World</div>
 <body>
-  
+    <div>
+        <div class="container" style="background-color:pink;">
+            <h2>TODO</h2>
+            <ul class="sortable connectedSortable">
+                <li class="task">Activity A1</li>
+                <li class="task">Activity A2</li>
+                <li class="task">Activity A3</li>
+            </ul>
+            <div class="link-div">
+                <input type="text" id="new_text" value=""/>
+                <input type="button" name="btnAddNew" value="Add" class="add-button"/>
+            </div>
+        </div>
+        <div class="container" style="background-color:orange;">
+            <h2>In Progress</h2>
+            <ul class="sortable connectedSortable" >
+                <li class="task">Activity B1</li>
+                <li class="task">Activity B2</li>
+            </ul>
+        </div>
+        <div class="container" style="background-color:yellow;">
+            <h2>Verification</h2>
+            <ul class="sortable connectedSortable" >
+                <li class="task">Activity C1</li>
+                <li class="task">Activity C2</li>
+            </ul>
+        </div>
+        <div class="container" style="background-color:green;">
+            <h2>Done</h2>
+            <ul class="sortable connectedSortable" >
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
