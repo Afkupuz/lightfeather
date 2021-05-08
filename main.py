@@ -1,16 +1,21 @@
-from database import db
+from database import db, Task
 from flask import Flask, send_from_directory, jsonify, request
 
 import tasks
+import cipher 
 
 def setup(db):
     """Create the app"""
     kanban = Flask(__name__)
     kanban.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kanban.db'
+    kanban.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(kanban)
     kanban.app_context().push()
     db.create_all()
-    #Todo: load from file
+    pre_data = cipher.read_from_file()
+    if db.session.query(Task).first() is None:
+        for task in pre_data:
+            tasks.create_task(task["body"], task["column"], task["sort_order"])
     return kanban
 
 app = setup(db)
@@ -55,6 +60,14 @@ def delete_task():
     print("Deleting...")
     print(request.form.get('task_id'))
     tasks.delete_task(request.form.get('task_id'))
+    return 'Success'
+
+@app.route('/cipher', methods=['GET'])
+def save_cipher():
+    """Saves current state in cipher"""
+    print("Ciphering...")
+    data = tasks.get_tasks()
+    cipher.write_to_file(data)
     return 'Success'
 
 if __name__ == '__main__':

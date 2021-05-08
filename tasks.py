@@ -3,9 +3,14 @@
 from datetime import datetime, timezone
 from database import db, Task
 
-def create_task(text):
+def create_task(text, col="", sort=""):
     """Create a new task"""
-    new_task = Task(body=text)
+    if col:
+        print("not null")
+        new_task = Task(body=text, column=col, sort_order=sort)
+    else:
+        print("itsnull")
+        new_task = Task(body=text)
     db.session.add(new_task)
     db.session.commit()
     return new_task.id

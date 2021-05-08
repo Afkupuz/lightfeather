@@ -1,9 +1,41 @@
+$( document ).ready(function() {
+  console.log( "ready!" );
+
+  $.ajax({ 
+    type: "GET", 
+    url: "/api/kanban",
+  }).done(function(data) {
+    console.log("openning");
+    data.forEach(element => {
+      console.log("id: " + element["id"] + "column: " + element["column"] + "sort: " + element["sort_order"] + " body: " + element["body"]);
+      create_task_card(element["column"], element["id"], element["body"], element["sort_order"])
+    });
+  });
+
+});
+
+function create_task_card(column, new_id, new_text, sort_order){
+  $('#'+column).append('<li id='+new_id+' data-sort-id='+sort_order+' class="task"><div><input type="text" class="taskinput" value="'+new_text+'"/><button class="update-button">Edit</button><button class="delete-button">Delete</button></div></li>');
+}
+
 $(function() {
     $( ".sortable" ).sortable({
       connectWith: ".connectedSortable",
       receive: function( event, ui ) {
         $(this).css({"background-color":"blue"});
-      }
+        $(ui.item).css({"background-color":"yellow"});
+        var pos = ui.item.index();
+        console.log("got moved " + pos)
+      },
+      update: function( event, ui ) {
+        var pos = ui.item.index();
+        console.log("got moved " + pos)
+      },
+      stop:function(event,ui){
+        var prev = $(ui.item).prev.parent("ul").attr('id');
+        var next = $(ui.item).next.parent("ul").attr('id');
+        alert('prev = '+prev+' next = '+next);
+    }
     }).disableSelection();
 
     $('.add-button').click(function() {
@@ -13,15 +45,8 @@ $(function() {
           url: "/api/kanban",
           data: {"text": new_text},
         }).done(function(new_id) {
-          $('#backlog').append('<li id='+new_id+' data-sort-id='+'1'+' class="task"><div><input type="text" class="taskinput" value="'+new_text+'"/><button class="update-button">Edit</button><button class="delete-button">Delete</button></div></li>');
+          create_task_card("backlog", new_id, new_text, 0)
         });
-    });
-
-    $('.get-button').click(function() {
-      var id_val = $('#get_val').val() - 1;
-      $.getJSON('/api/kanban', function(data) {
-        $("#result").text("id: " + data[id_val]["id"] + " body: " + data[id_val]["body"]);
-      });
     });
 
     $(document).on("click", ".update-button", function() {
@@ -46,3 +71,11 @@ $(function() {
     });
     
 });
+
+$(window).on("beforeunload", function() {
+  console.log("closing")
+  $.ajax({ 
+    type: "GET", 
+    url: "/cipher"
+  });
+})

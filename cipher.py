@@ -1,5 +1,7 @@
 """cipher controller"""
 
+import json
+
 from config import get_loads, get_shift
 
 LOWER_STRING = "abcdefghijklmnopqrstuvwxyz"
@@ -10,6 +12,7 @@ OTHER_STRING = "!@#$%^&*()"
 def encode(text):
     """Shifts forward each character in text by Shift amount"""
     shift = abs(get_shift())
+    print(text)
     data = []
     for i in text:
         if i.strip() and i in LOWER_STRING: 
@@ -43,19 +46,18 @@ def decode(text):
     output = ''.join(data)
     return output
 
-def write_to_file(text):
+def write_to_file(data):
     path = get_loads()
     storage_file = open(path, "w")
-    encoded = encode(text)
+    json_text = json.dumps(data)
+    encoded = encode(json_text)
     storage_file.writelines(encoded)
     storage_file.close()
     return True
 
 def read_from_file():
-    data = []
     path = get_loads()
     storage_file = open(path, "r")
-    for line in storage_file:
-        data.append(decode(line))
+    data = decode(storage_file.read())
     storage_file.close()
-    return data
+    return json.loads(data)
