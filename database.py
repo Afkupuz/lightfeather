@@ -12,6 +12,8 @@ class Task(db.Model):
     body = db.Column(db.String(120))
     column = db.Column(db.String(120), default="backlog")
     sort_order = db.Column(db.Integer, default=0)
+    user = db.Column(db.String(120), default="anonymous")
+    modified = db.Column(db.DateTime, default=datetime.utcnow)
 
     def get_json(self):
         """Return a JSON representation of task"""
@@ -20,4 +22,6 @@ class Task(db.Model):
             'body': self.body,
             'column': self.column,
             'sort_order': self.sort_order,
+            'user': self.user,
+            'modified': self.modified.replace(tzinfo=timezone.utc).isoformat()
         }

@@ -2,12 +2,13 @@ body {font-family:Montserrat;}
 header{
 	font-size: 30px;
 	text-align:left;
-	box-shadow: 2px 4px;
-	border-radius: 7px;
-	border-bottom:solid;
 	height: 140px;
 	border-radius: 5px;
 	position: relative;
+	-moz-box-shadow:    10px 10px 15px 6px #ccc;
+	-webkit-box-shadow: 10px 10px 15px 6px #ccc;
+	box-shadow:         10px 10px 15px 6px #ccc;
+
 }
 header p {
 	margin: 0;
@@ -17,13 +18,17 @@ header p {
 	transform: translateY(-50%);
 }
 footer{
-	font-size: 8px;
-	box-shadow: 1px 2px;
+	-moz-box-shadow:    10px 10px 15px 6px #ccc;
+	-webkit-box-shadow: 10px 10px 15px 6px #ccc;
+	box-shadow:         10px 10px 15px 6px #ccc;
 	border-radius: 3px;
-	border-bottom:solid;
-	display:inline-block;
+	display: inline-block;
+	position: relative;
+  	bottom: 0;
 }
 input{
+	padding: 12px;
+	overflow-wrap: normal;
 	position: relative;
 	min-height: 50px;
 	width: 80%;
@@ -47,10 +52,16 @@ input{
 .left-button{
 	position:absolute;
 	left: -1px;
+	top: 50px;
+	border-radius: 100%;
+    opacity: 40%;
 }
 .right-button{
 	position:absolute;
 	right: -1px;
+	top:50px;
+	border-radius: 100%;
+    opacity: 40%;
 }
 .delete-button{
 	position:absolute;
@@ -64,9 +75,20 @@ input{
 .task:hover{
 	transition: all .2s ease-in-out;
 	transform: scale(1.1);
+	border: 2px;
+	border-style: solid;
+	border-color: black;
 }
 .task:hover .delete-button{
 	visibility: unset;
+}
+.task:hover .left-button{
+	transition: all .2s ease-in-out;
+	transform: translateX(80%);
+}
+.task:hover .right-button{
+	transition: all .2s ease-in-out;
+	transform: translateX(-80%);
 }
 .task{
 	position: relative;
@@ -74,9 +96,15 @@ input{
 	border-radius: 5px;
 	text-align: center;
 }
-.task p{
-	position: relative;
+.task .taskinput{
 	padding: 12px;
+	overflow-wrap: normal;
+	position: relative;
+	min-height: 50px;
+	width: 80%;
+	margin: 10px;
+	text-align: center;
+	display: inline-block;
 }
 .container {
 	width: 30%;
@@ -87,12 +115,16 @@ input{
 	border-radius: 5px;
 }
 .container-head {
-	float: center;
+	position: relative;
 	text-align: center;
 	color: white;
-	margin:10px;
 	border-radius: 5px;
 	margin-bottom: 20px;
+	height: 50px;
+}
+.container-head h2{
+	position: relative;
+	top: 25%;
 }
 .container-body {
 	min-height: 500px;
@@ -120,9 +152,23 @@ input{
 	visibility: hidden;
 	display: inline-block;
 }
-.add-button{
+.show-button{
 	margin-top: 20px;
 	display: inline-block;
 	border: none;
 	background-color: rgba(255, 255, 255, 0);
+}
+#creation{
+	border: 5px solid red;
+	display:none;
+}
+p#time{
+	float: left;
+	font-size: 12px;
+	margin: 5px;
+}
+p#user{
+	float: right;
+	font-size: 12px;
+	margin: 5px;
 }

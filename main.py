@@ -18,7 +18,12 @@ def setup(db):
         try:
             pre_data = cipher.read_from_file()
             for task in pre_data:
-                tasks.create_task(task["body"], task["column"], task["sort_order"])
+                tasks.create_task(
+                    body=task["body"],
+                    column=task["column"],
+                    sort_order=task["sort_order"],
+                    user=task["user"],
+                    modified=task["modified"])
         except:
             pass
     return kanban
@@ -40,16 +45,11 @@ def get_tasks():
 def create_task():
     """PUT for kanban new task"""
     print("creating...")
-    task_id = tasks.create_task(request.form.get('text'))
-    return str(task_id)
+    task_id, user, date = tasks.create_task(request.form.get('text'))
+    new_task = {"id": task_id, "user": user, "date": date}
+    return new_task
 
 @app.route('/api/kanban', methods=['POST'])
-def order_tasks():
-    """POST for kanban lane changes"""
-    tasks.order_tasks()
-    return "Success"
-
-@app.route('/task', methods=['PUT'])
 def update_task():
     """Update a task"""
     print("updating...")
@@ -60,7 +60,7 @@ def update_task():
     tasks.update_task(id, body, column, sort_order)
     return "Success"
 
-@app.route('/task', methods=['DELETE'])
+@app.route('/api/kanban', methods=['DELETE'])
 def delete_task():
     """Delete a task"""
     print("Deleting...")
