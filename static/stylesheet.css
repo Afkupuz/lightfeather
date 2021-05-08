@@ -1,11 +1,128 @@
-body {font-family:Montserrat;background-color: #0066FF;}
-  h2 {margin:5px;}
-  input[type=text] {margin:10px}
-  input[type=button] {margin:10px}  
-  .container {width: 20%; float:left;clear: right;margin:10px;border-radius: 5px;border-style: solid;border-color: #ADADAD;}
-  .sortable { list-style-type: none; margin:0; padding:2px; min-height:30px; border-radius: 5px;}
-  .sortable li { margin: 3px 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
-  .sortable li span { position: absolute; margin-left: -1.3em; }
-  
-  .task:hover {transition: all .2s ease-in-out;transform: scale(1.1);}
-  .task{background-color:purple;border-radius:3px;}
+body {font-family:Montserrat;}
+header{
+	font-size: 30px;
+	text-align:left;
+	box-shadow: 2px 4px;
+	border-radius: 7px;
+	border-bottom:solid;
+	height: 140px;
+	border-radius: 5px;
+	position: relative;
+}
+header p {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+footer{
+	font-size: 8px;
+	box-shadow: 1px 2px;
+	border-radius: 3px;
+	border-bottom:solid;
+	display:inline-block;
+}
+input{
+	position: relative;
+	min-height: 50px;
+	width: 80%;
+	margin: 10px;
+	text-align: center;
+	display: inline-block;
+}
+.sortable{
+	list-style-type: none;
+	margin:0; padding:2px;
+	min-height:500px;
+}
+.sortable li{
+	margin: 16px;
+	font-size: 1.4em;
+	height: fit-content;
+}
+.sortable li span {
+	position: absolute;
+}
+.left-button{
+	position:absolute;
+	left: -1px;
+}
+.right-button{
+	position:absolute;
+	right: -1px;
+}
+.delete-button{
+	position:absolute;
+	background: red;
+	color: white;
+	top: -1px;
+	right: -1px;
+	color: #fff;
+	visibility: hidden;
+}
+.task:hover{
+	transition: all .2s ease-in-out;
+	transform: scale(1.1);
+}
+.task:hover .delete-button{
+	visibility: unset;
+}
+.task{
+	position: relative;
+	background-color:white;
+	border-radius: 5px;
+	text-align: center;
+}
+.task p{
+	position: relative;
+	padding: 12px;
+}
+.container {
+	width: 30%;
+	height:auto;
+	float:left;
+	clear: right;
+	margin-left:20px;
+	border-radius: 5px;
+}
+.container-head {
+	float: center;
+	text-align: center;
+	color: white;
+	margin:10px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+.container-body {
+	min-height: 500px;
+	max-height: 500px;
+	scroll-behavior: auto;
+	overflow: scroll;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.container-foot {
+	height: 50px;
+	scroll-behavior: auto;
+	overflow: scroll;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	text-align: center;
+}
+#backlog .left-button{
+	visibility: hidden;
+}
+#complete .right-button{
+	visibility: hidden;
+}
+.update-button{
+	visibility: hidden;
+	display: inline-block;
+}
+.add-button{
+	margin-top: 20px;
+	display: inline-block;
+	border: none;
+	background-color: rgba(255, 255, 255, 0);
+}

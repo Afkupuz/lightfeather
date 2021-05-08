@@ -15,7 +15,14 @@ $( document ).ready(function() {
 function create_task_card(column, new_id, new_text, sort_order){
   //Create a task
   console.log(column + ", " + new_id + ", " + new_text + ", " + sort_order)
-  $('#'+column).append('<li id='+new_id+' data-sort-id='+sort_order+' class="task"><div><input type="text" class="taskinput" value="'+new_text+'"/><button class="update-button">Edit</button><button class="delete-button">Delete</button></div></li>');
+  var item = '<li id='+new_id+' data-sort-id='+sort_order+' class="task">'
+  var input = '<div><p class="taskinput">'+new_text+'</p>'
+  var edit = '<button class="update-button">Update</button>'
+  var del = '<button class="delete-button">x</button>'
+  var left = '<button class="left-button">\<</button>'
+  var right = '<button class="right-button">\></button>'
+  var close = '</div></li>'
+  $('#'+column).append(item+input+edit+del+left+right+close);
 }
 
 function update_task(id, new_text, sort_order, column){
@@ -69,7 +76,9 @@ $(function() {
     $(document).on("click", ".update-button", function() {
       var task_id = $(this).closest(".task").attr("id");
       var new_text = $(this).closest(".task").find("input").val();
+
       update_task(task_id, new_text, "", "")
+      $(this).css({"visibility": "hidden"})
     });
 
     //Deletes tasks
@@ -78,10 +87,44 @@ $(function() {
         $.ajax({ 
           type: "DELETE", 
           url: "/task",
-          data: {"task_id": task_id} 
+          data: {"task_id": task_id}
         }).done(function(thing) {
           $('li#'+task_id).remove();
         });
+    });
+
+    //Left shift button
+    $(document).on("click", ".left-button", function() {
+      console.log("left")
+      var old_column = $(this).closest("ul").attr("id");
+      var task_id = $(this).closest(".task").attr("id");
+      var new_column = "backlog"
+      if (old_column == "complete") {
+        new_column = "inprogress"
+      };
+      $('#'+new_column).append($('li#'+task_id));
+      update_task(task_id, "", "", new_column);
+    });
+  
+    //Righ shift button
+    $(document).on("click", ".right-button", function() {
+      console.log("right")
+      var old_column = $(this).closest("ul").attr("id");
+      var task_id = $(this).closest(".task").attr("id");
+      console.log(old_column)
+      var new_column = "complete"
+      if (old_column == "backlog") {
+        new_column = "inprogress"
+      };
+      $('#'+new_column).append($('li#'+task_id));
+      update_task(task_id, "", "", new_column);
+    });
+
+    $(document).on('click', '.taskinput', function(){
+      var task_id = $(this).closest(".task").attr("id");
+      console.log(task_id)
+      $('li#'+task_id+' .update-button').css({"visibility": "unset"})
+      
     });
     
 });

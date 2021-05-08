@@ -9,27 +9,43 @@
     <script type="text/javascript" src="./static/script.js"></script>        
 </head>
 <body>
+    <header><p>Kanban Challenge</p></header>
     <div>
-        <div class="container" style="background-color:red;">
-            <h2>Backlog</h2>
-            <ul class="sortable connectedSortable" id="backlog">
-            </ul>
+        <div class="container">
+            <div class="container-head" style="background-color:#ADADAD;">
+                <h2>Backlog</h2>
+            </div>
+            <div class="container-body" style="background-color:#ADADAD;">
+                <ul class="sortable connectedSortable" id="backlog">
+                </ul>
+            </div>
+            <div class="container-foot" style="background-color:#ADADAD;">
+                <button class="add-button">+ Add Card</button>
+            </div>
         </div>
-        <div class="container" style="background-color:orange;">
-            <h2>In Progress</h2>
-            <ul class="sortable connectedSortable" id="inprogress" >
-            </ul>
+        <div class="container">
+            <div class="container-head" style="background-color:#0066FF;">
+                <h2>In Progress</h2>
+            </div>
+            <div class="container-body" style="background-color:#0066FF;">
+                <ul class="sortable connectedSortable" id="inprogress" >
+                </ul>
+            </div>
+            <div class="container-foot" style="background-color:#0066FF;">
+            </div>
         </div>
-        <div class="container" style="background-color:green;">
-            <h2>Complete</h2>
-            <ul class="sortable connectedSortable" id="complete">
-            </ul>
-        </div>
-        <div class='container'>
-            <input type="text" id="new_text" value=""/><button class="add-button">Add New</button>
-            <input type="text" id="get_val" value=""/><button class="get-button">Get All</button>
-            <p id=result></p>
+        <div class="container">
+            <div class="container-head" style="background-color:green;">
+                <h2>Complete</h2>
+            </div>
+            <div class="container-body" style="background-color:green;">
+                <ul class="sortable connectedSortable" id="complete">
+                </ul>
+            </div>
+            <div class="container-foot" style="background-color:green;">
+            </div>
         </div>
     </div>
+    <footer>By Nicolas Helgeson</footer>
 </body>
 </html>
