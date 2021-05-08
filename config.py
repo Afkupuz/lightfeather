@@ -1,3 +1,5 @@
+"""Config Controller"""
+
 from flask import json
 
 def get_conf():

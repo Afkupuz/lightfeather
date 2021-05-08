@@ -1,8 +1,7 @@
-"""cipher controller"""
-
-import json
+"""Cipher controller"""
 
 from config import get_loads, get_shift
+from flask import json
 
 LOWER_STRING = "abcdefghijklmnopqrstuvwxyz"
 UPPER_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -47,7 +46,10 @@ def decode(text):
     return output
 
 def write_to_file(data):
+    print("world")
+    print(data)
     path = get_loads()
+    print(data)
     storage_file = open(path, "w")
     json_text = json.dumps(data)
     encoded = encode(json_text)

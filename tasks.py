@@ -1,7 +1,7 @@
 """Task controller"""
 
-from datetime import datetime, timezone
 from database import db, Task
+from datetime import datetime, timezone
 
 def create_task(text, col="", sort=""):
     """Create a new task"""
@@ -19,10 +19,16 @@ def get_tasks():
     """Return sorted list of tasks"""
     return [task.get_json() for task in Task.query.order_by(Task.sort_order.asc()).all()]
 
-def update_task(task_id, text):
+def update_task(task_id, body="", column="", sort_order=""):
     """Update a task"""
     task = Task.query.get(task_id)
-    task.body = text
+    print("madeit: "+body+column+sort_order)
+    if body:
+        task.body = body
+    if column:
+        task.column = column
+    if sort_order:
+        task.sort_order = sort_order
     db.session.commit()
 
 def delete_task(task_id):

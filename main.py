@@ -1,8 +1,10 @@
+"""Main controller"""
+
 from database import db, Task
 from flask import Flask, send_from_directory, jsonify, request
 
 import tasks
-import cipher 
+import cipher
 
 def setup(db):
     """Create the app"""
@@ -12,10 +14,13 @@ def setup(db):
     db.init_app(kanban)
     kanban.app_context().push()
     db.create_all()
-    pre_data = cipher.read_from_file()
     if db.session.query(Task).first() is None:
-        for task in pre_data:
-            tasks.create_task(task["body"], task["column"], task["sort_order"])
+        try:
+            pre_data = cipher.read_from_file()
+            for task in pre_data:
+                tasks.create_task(task["body"], task["column"], task["sort_order"])
+        except:
+            pass
     return kanban
 
 app = setup(db)
@@ -35,7 +40,6 @@ def get_tasks():
 def create_task():
     """PUT for kanban new task"""
     print("creating...")
-    print(request.form.get('text'))
     task_id = tasks.create_task(request.form.get('text'))
     return str(task_id)
 
@@ -49,16 +53,17 @@ def order_tasks():
 def update_task():
     """Update a task"""
     print("updating...")
-    print(request.form.get('task_id'))
-    print(request.form)
-    tasks.update_task(request.form.get('task_id'), request.form.get('text'))
+    id = request.form.get('task_id')
+    body = request.form.get('body')
+    column = request.form.get('column')
+    sort_order = request.form.get('sort_order')
+    tasks.update_task(id, body, column, sort_order)
     return "Success"
 
 @app.route('/task', methods=['DELETE'])
 def delete_task():
     """Delete a task"""
     print("Deleting...")
-    print(request.form.get('task_id'))
     tasks.delete_task(request.form.get('task_id'))
     return 'Success'
 
@@ -67,7 +72,10 @@ def save_cipher():
     """Saves current state in cipher"""
     print("Ciphering...")
     data = tasks.get_tasks()
+    print(data)
+    print("Ciphering...")
     cipher.write_to_file(data)
+    print("Ciphering...")
     return 'Success'
 
 if __name__ == '__main__':

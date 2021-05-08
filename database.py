@@ -1,4 +1,5 @@
-"""SQLAlchemy database"""
+"""SQLAlchemy database and Task model"""
+
 from flask_sqlalchemy import SQLAlchemy
 
 from datetime import datetime, timezone
