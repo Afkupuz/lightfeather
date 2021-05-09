@@ -8,6 +8,7 @@ Python FLASK RESTful API endpoints hosted on port: 23456
 Drag and drop functionality
 Add, Update, Delete, and organize cards across the board
 Unlimited cards = unlimited potential!
+Auto-generated comments from async job
 
 ## Installation
 ```sh
