@@ -45,7 +45,7 @@ def get_tasks():
 def create_task():
     """PUT for kanban new task"""
     print("creating...")
-    task_id, user, date = tasks.create_task(request.form.get('text'))
+    task_id, user, date = tasks.create_task(body=request.form.get('text'), user=request.form.get('user'))
     new_task = {"id": task_id, "user": user, "date": date}
     return new_task
 

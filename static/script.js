@@ -1,3 +1,5 @@
+var NAME = "anonymous"
+
 $( document ).ready(function() {
 //On loading the page, load in data from the database
   $.ajax({ 
@@ -9,6 +11,9 @@ $( document ).ready(function() {
       create_task_card(element["column"], element["id"], element["body"], element["sort_order"], element["user"], element["modified"])
     });
   });
+  var text = prompt("Please enter your name", NAME);
+  NAME = text
+  console.log(NAME)
 
 });
 
@@ -66,10 +71,11 @@ $(function() {
         $('.show-button').css({"visibility":"unset"})
         $('li#creation').css({"display":"none"})
         var new_text = $(this).closest(".task").find("p").html();
+        console.log(NAME)
         $.ajax({ 
           type: "PUT", 
           url: "/api/kanban",
-          data: {"text": new_text},
+          data: {"text": new_text, "user": NAME},
         }).done(function(ret) {
           create_task_card("backlog", ret["id"], new_text, 0, ret["user"], ret["date"])
         });

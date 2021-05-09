@@ -3,9 +3,9 @@
 from database import db, Task
 from datetime import datetime, timezone
 
-def create_task(text, **kwargs):
+def create_task(body, **kwargs):
     """Create a new task"""
-    new_task = Task(body=text, **kwargs)
+    new_task = Task(body=body, **kwargs)
     db.session.add(new_task)
     db.session.commit()
     return (new_task.id, new_task.user, new_task.modified)
