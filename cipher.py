@@ -46,10 +46,8 @@ def decode(text):
     return output
 
 def write_to_file(data):
-    print("world")
-    print(data)
+    print("Writing...")
     path = get_loads()
-    print(data)
     storage_file = open(path, "w")
     json_text = json.dumps(data)
     encoded = encode(json_text)
@@ -58,6 +56,7 @@ def write_to_file(data):
     return True
 
 def read_from_file():
+    print("Reading...")
     path = get_loads()
     storage_file = open(path, "r")
     data = decode(storage_file.read())

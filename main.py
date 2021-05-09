@@ -1,10 +1,14 @@
 """Main controller"""
 
 from database import db, Task
-from flask import Flask, send_from_directory, jsonify, request
+from flask_socketio import SocketIO, emit
+from flask import Flask, render_template, url_for, copy_current_request_context, send_from_directory, jsonify, request
+from time import sleep
+from threading import Thread, Event
 
 import tasks
 import cipher
+import random
 
 def setup(db):
     """Create the app"""
@@ -28,7 +32,30 @@ def setup(db):
             pass
     return kanban
 
+#Build the app
 app = setup(db)
+#Turn the flask app into a socketio app
+socketio = SocketIO(app, async_mode=None, logger=True, engineio_logger=True)
+
+
+#Event generator Thread
+thread = Thread()
+thread_stop_event = Event()
+
+def randomTaskGenerator():
+    with app.app_context():
+        print("Making random comments")
+        people = ["Arthur", "Marvin", "Ford", "Deep Thought"]
+        sayings = ["Don't Panic.", "Space is big.", "Where's your towel?", "42", "I don't know why I bother..."]
+        while not thread_stop_event.isSet():
+            person = people[random.randint(0,3)]
+            saying = sayings[random.randint(0,4)]
+            print(person)
+            print(saying)
+            task_id, user, date = tasks.create_task(body=saying, user=person)
+            socketio.emit('new_event', {"id": task_id, "user": user, "body":saying}, namespace='/test')
+            socketio.sleep(5)
+
 
 @app.route('/')
 def index():
@@ -72,11 +99,25 @@ def save_cipher():
     """Saves current state in cipher"""
     print("Ciphering...")
     data = tasks.get_tasks()
-    print(data)
-    print("Ciphering...")
     cipher.write_to_file(data)
-    print("Ciphering...")
     return 'Success'
 
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    #Need visibility of the global thread object
+    global thread
+    print('Client connected')
+
+    #Start the random number generator thread only if the thread has not been started before.
+    if not thread.isAlive():
+        print("Starting Thread")
+        thread = socketio.start_background_task(randomTaskGenerator)
+
+@socketio.on('disconnect', namespace='/test')
+def test_disconnect():
+    print('Client disconnected')
+
+
+#Run the app
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port="23456")
+    socketio.run(app, debug=True, host="0.0.0.0", port="23456")

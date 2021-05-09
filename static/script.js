@@ -1,5 +1,19 @@
 var NAME = "anonymous"
 
+$(document).ready(function(){
+  //connect to the socket server.
+  var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+  var numbers_received = [];
+
+  //receive details from server
+  socket.on('new_event', function(msg) {
+      console.log("Received new task: " + msg.body);
+      var time = Date.now()
+      create_task_card("backlog", msg.id, msg.body, 0, msg.user, time)
+  });
+
+});
+
 $( document ).ready(function() {
 //On loading the page, load in data from the database
   $.ajax({ 
@@ -13,7 +27,7 @@ $( document ).ready(function() {
   });
   var text = prompt("Please enter your name", NAME);
   NAME = text
-  console.log(NAME)
+  console.log(text)
 
 });
 
@@ -67,10 +81,10 @@ $(function() {
     }).disableSelection();
 
     //Creates a new task
-    $('.add-button').click(function() {
+    $(document).on("click", ".add-button", function() {
         $('.show-button').css({"visibility":"unset"})
         $('li#creation').css({"display":"none"})
-        var new_text = $(this).closest(".task").find("p").html();
+        var new_text = $('li#creation').find('input.taskinput').val()
         console.log(NAME)
         $.ajax({ 
           type: "PUT", 
@@ -81,11 +95,21 @@ $(function() {
         });
     });
 
+    //Hit enter to create
+    $(document).on("keypress", "input.taskinput", function(event) {
+      if(event.keyCode == 13){
+        $('.add-button').click();
+      }
+    });
+
     //Shows new task maker
-    $('.show-button').click(function() {
+    $(document).on("click", ".show-button", function() {
       $(this).css({"visibility":"hidden"})
       $('li#creation').css({"display":"block"})
-  });
+      //$('li#creation').find('input.taskinput').html("")
+      $('li#creation').find('input.taskinput').val(" ")
+      $('li#creation').find('input.taskinput').focus()
+    });
 
     //Updates tasks
     $(document).on("click", ".update-button", function() {
