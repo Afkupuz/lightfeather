@@ -37,12 +37,13 @@ app = setup(db)
 #Turn the flask app into a socketio app
 socketio = SocketIO(app, async_mode=None, logger=True, engineio_logger=True)
 
-
 #Event generator Thread
 thread = Thread()
 thread_stop_event = Event()
 
+# Async job function
 def randomTaskGenerator():
+    """Generate random sayings for random people"""
     with app.app_context():
         print("Making random comments")
         people = ["Arthur", "Marvin", "Ford", "Deep Thought"]
@@ -50,18 +51,18 @@ def randomTaskGenerator():
         while not thread_stop_event.isSet():
             person = people[random.randint(0,3)]
             saying = sayings[random.randint(0,4)]
-            print(person)
-            print(saying)
+            print(person + " says '" + saying +"'")
             task_id, user, date = tasks.create_task(body=saying, user=person)
             socketio.emit('new_event', {"id": task_id, "user": user, "body":saying}, namespace='/test')
             socketio.sleep(5)
 
-
+# Main index load
 @app.route('/')
 def index():
     """Gets the main index page"""
     return send_from_directory('static', 'index.html')
 
+# Endpoints that do stuff below
 @app.route('/api/kanban', methods=["GET"])
 def get_tasks():
     """GET kanban state"""

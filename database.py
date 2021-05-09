@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 
 db = SQLAlchemy()
 
+# Model for task in the database
 class Task(db.Model):
     """SQLAlchemy task model"""
     id = db.Column(db.Integer, primary_key=True)

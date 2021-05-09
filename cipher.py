@@ -8,6 +8,7 @@ UPPER_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUMBER_STRING = "1234567890"
 OTHER_STRING = "!@#$%^&*()"
 
+# Encodes data by shifting based on config Shift and above lists based on what kind of character
 def encode(text):
     """Shifts forward each character in text by Shift amount"""
     shift = abs(get_shift())
@@ -27,6 +28,7 @@ def encode(text):
     output = ''.join(data)
     return output
 
+# Decodes data by shifting based on config Shift and above lists based on what kind of character
 def decode(text):
     """Shifts back each character in text by Shift amount"""
     shift = abs(get_shift())
@@ -45,7 +47,9 @@ def decode(text):
     output = ''.join(data)
     return output
 
+# Saves to file
 def write_to_file(data):
+    """Encodes and writes to Loads file"""
     print("Writing...")
     path = get_loads()
     storage_file = open(path, "w")
@@ -55,7 +59,9 @@ def write_to_file(data):
     storage_file.close()
     return True
 
+# Reads from saved file
 def read_from_file():
+    """Reads from Loads file and decodes"""
     print("Reading...")
     path = get_loads()
     storage_file = open(path, "r")

@@ -1,4 +1,4 @@
-var NAME = "anonymous"
+var NAME = "anonymous";
 
 $(document).ready(function(){
   //connect to the socket server.
@@ -8,8 +8,8 @@ $(document).ready(function(){
   //receive details from server
   socket.on('new_event', function(msg) {
       console.log("Received new task: " + msg.body);
-      var time = Date.now()
-      create_task_card("backlog", msg.id, msg.body, 0, msg.user, time)
+      var time = Date.now();
+      create_task_card("backlog", msg.id, msg.body, 0, msg.user, time);
   });
 
 });
@@ -26,14 +26,14 @@ $( document ).ready(function() {
     });
   });
   var text = prompt("Please enter your name", NAME);
-  NAME = text
-  console.log(text)
+  NAME = text;
+  console.log("your name is: " + text);
 
 });
 
 function create_task_card(column, new_id, new_text, sort_order, user, modified){
   //Create a task html element
-  console.log(column + ", " + new_id + ", " + new_text + ", " + sort_order);
+  console.log("New task: " + "col:" + column + ", id:" + new_id + ", b:" + new_text + ", o" + sort_order + ", u: " + user);
   var item = '<li id='+new_id+' data-sort-id='+sort_order+' class="task">';
   var input = '<p data-editable class="taskinput">'+new_text+'</p>';
   var edit = '<button class="update-button">Update</button>';
@@ -49,7 +49,7 @@ function create_task_card(column, new_id, new_text, sort_order, user, modified){
 
 function update_task(id, new_text, sort_order, column){
   //Update a task
-  console.log("c" + column + ", i" + id + ", t" + new_text + ", o" + sort_order)
+  console.log("Updated: " + "col:" + column + ", id:" + id + ", b:" + new_text + ", o" + sort_order);
   $.ajax({ 
     type: "POST", 
     url: "/api/kanban",
@@ -67,14 +67,13 @@ $(function() {
         ui.item.data('column', $(this).attr('id'));
       },
       update: function( event, ui ) {
-        
         ui.item.data('task_id', ui.item.attr('id'));
         ui.item.data('sort_order', ui.item.index());
         ui.item.data('column', $(this).attr('id'));
     
       },
       stop: function( event, ui ) {
-        console.log("move")
+        console.log("moved task id: " + ui.item.data('task_id'));
         update_task(ui.item.data('task_id'), "", ui.item.data('sort_order'), ui.item.data('column'))
       },
 
@@ -85,7 +84,7 @@ $(function() {
         $('.show-button').css({"visibility":"unset"})
         $('li#creation').css({"display":"none"})
         var new_text = $('li#creation').find('input.taskinput').val()
-        console.log(NAME)
+        console.log("New task creation api call")
         $.ajax({ 
           type: "PUT", 
           url: "/api/kanban",
@@ -104,6 +103,7 @@ $(function() {
 
     //Shows new task maker
     $(document).on("click", ".show-button", function() {
+      console.log("Show creator, and hide me!")
       $(this).css({"visibility":"hidden"})
       $('li#creation').css({"display":"block"})
       //$('li#creation').find('input.taskinput').html("")
@@ -115,8 +115,7 @@ $(function() {
     $(document).on("click", ".update-button", function() {
       var task_id = $(this).closest(".task").attr("id");
       var new_text = $(this).closest(".task").find("p").html();
-      console.log(task_id + new_text)
-      console.log("update")
+      console.log("Update task: " + task_id + " with " + new_text)
       update_task(task_id, new_text, "", "")
       $(this).css({"visibility": "hidden"})
     });
@@ -124,6 +123,7 @@ $(function() {
     //Deletes tasks
     $(document).on("click", ".delete-button", function() {
       var task_id = $(this).closest(".task").attr("id");
+      console.log("Delete task " + task_id)
         $.ajax({ 
           type: "DELETE", 
           url: "/api/kanban",
@@ -135,7 +135,7 @@ $(function() {
 
     //Left shift button
     $(document).on("click", ".left-button", function() {
-      console.log("left")
+      console.log("Move left")
       var old_column = $(this).closest("ul").attr("id");
       var task_id = $(this).closest(".task").attr("id");
       var new_column = "backlog"
@@ -148,10 +148,9 @@ $(function() {
   
     //Righ shift button
     $(document).on("click", ".right-button", function() {
-      console.log("right")
+      console.log("Move right")
       var old_column = $(this).closest("ul").attr("id");
       var task_id = $(this).closest(".task").attr("id");
-      console.log(old_column)
       var new_column = "complete"
       if (old_column == "backlog") {
         new_column = "inprogress"
@@ -162,28 +161,24 @@ $(function() {
 
     //Swaps between input text and plain text
     $(document).on('click', '.taskinput', function(){
+      console.log("Edit the text!")
       var task_id = $(this).closest(".task").attr("id");
       $('li#'+task_id+' .update-button').css({"visibility": "unset"})
-
       var $update = $(this);
       var $input = $('<input/>').val( $update.text() );
-      
       $update.replaceWith( $input );
-      
       var save = function(){
         var $p = $('<p data-editable class="taskinput" />').text( $input.val() );
         $input.replaceWith( $p );
       };
-
       $input.one('blur', save).focus();
-      
     });
     
 });
 
 //Refreshing or closing the page prompts a data backup
 $(window).on("beforeunload", function() {
-  console.log("closing")
+  console.log("Not that you care... but this window is closing and im saving stuff")
   $.ajax({ 
     type: "GET", 
     url: "/cipher"
