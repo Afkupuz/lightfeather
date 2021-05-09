@@ -43,9 +43,6 @@ $(function() {
     $( ".sortable" ).sortable({
       connectWith: ".connectedSortable",
       receive: function( event, ui ) {
-        $(this).css({"background-color":"blue"});
-        $(ui.item).css({"background-color":"yellow"});
-
         ui.item.data('task_id', ui.item.attr('id'));
         ui.item.data('sort_order', ui.item.index());
         ui.item.data('column', $(this).attr('id'));
@@ -133,15 +130,15 @@ $(function() {
       update_task(task_id, "", "", new_column);
     });
 
+    //Swaps between input text and plain text
     $(document).on('click', '.taskinput', function(){
       var task_id = $(this).closest(".task").attr("id");
-      console.log(task_id)
       $('li#'+task_id+' .update-button').css({"visibility": "unset"})
 
-      var $el = $(this);
-              
-      var $input = $('<input/>').val( $el.text() );
-      $el.replaceWith( $input );
+      var $update = $(this);
+      var $input = $('<input/>').val( $update.text() );
+      
+      $update.replaceWith( $input );
       
       var save = function(){
         var $p = $('<p data-editable class="taskinput" />').text( $input.val() );
